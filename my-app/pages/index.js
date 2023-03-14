@@ -10,12 +10,20 @@ export default function Home() {
   const [city, setCity] = useState("");
   const [weather, setWeather] = useState({});
   const [loading, setLoading] = useState(false);
+  const [background, setBackground] = useState(
+    "https://images.unsplash.com/photo-1451187580459-43490279c0fa?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2072&q=80"
+  );
   const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=imperial&appid=${process.env.NEXT_PUBLIC_WEATHER_KEY}`;
-  const unsplash_url = `https://api.unsplash.com/photos/random/?query=${city}&orientation=landscape&client_id=${process.env.UNSPLASH_KEY}`;
+  const unsplash_url = `https://api.unsplash.com/photos/random/?query=${city}&orientation=landscape&client_id=${process.env.NEXT_PUBLIC_UNSPLASH_KEY}`;
 
   const fetchWeather = (e) => {
     e.preventDefault();
     setLoading(true);
+    axios.get(unsplash_url).then((response) => {
+      const data = response.data;
+      setBackground(data.urls.full);
+      // console.log(response.data);
+    });
     axios.get(url).then((response) => {
       setWeather(response.data);
       // console.log(response.data);
@@ -39,24 +47,24 @@ export default function Home() {
         <div className="absolute top-0 left-0 right-0 bottom-0 bg-black/40 z-[1]" />
         {/* Background Image */}
         <Image
-          src="https://images.unsplash.com/photo-1580193769210-b8d1c049a7d9?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1174&q=80"
+          src={background}
           layout="fill"
           className="object-cover"
           alt="background"
         />
 
         {/* Search */}
-        <div className="relative flex justify-between items-center max-w-[500px] w-full m-auto pt-4 text-white z-10">
+        <div className="relative flex justify-between items-center max-w-[1000px] w-full m-auto pt-5 text-white z-10">
           <form
             onSubmit={fetchWeather}
-            className="flex justify-between items-center w-full m-auto p-3 bg-transparent border border-gray-300 text-white rounded-2xl"
+            className="flex justify-between items-center w-full m-auto p-3 bg-black/60 border border-gray-300 text-white rounded-2xl"
           >
             <div>
               <input
                 onChange={(e) => setCity(e.target.value)}
                 type="text"
                 placeholder="Search city"
-                className="bg-transparent border-none text-white text-2xl w-[430px] focus:outline-none"
+                className="bg-transparent border-none text-white text-2xl w-[930px] focus:outline-none"
               />
             </div>
             <button onClick={fetchWeather}>

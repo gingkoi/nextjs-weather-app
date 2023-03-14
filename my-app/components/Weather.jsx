@@ -6,8 +6,8 @@ export const Weather = ({ data }) => {
   return (
     <div className="relative flex flex-col justify-between max-w-[500px] w-full h-[90vh] m-auto p-4 text-gray-300 z-10">
       {/* Top */}
-      <div className="relative flex justify-between pt-12">
-        <div className="flex flex-col items-center">
+      <div className="relative flex justify-between mt-12 bg-black/20 backdrop-blur-sm border border-white  rounded-3xl p-5">
+        <div className="flex flex-col items-center ">
           <Image
             src={`https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`}
             alt="/"
@@ -21,12 +21,13 @@ export const Weather = ({ data }) => {
         </p>
       </div>
       {/* Bottom */}
-      <div className="bg-black/80 relative p-8 rounded-md">
+      <div className="bg-black/20 backdrop-blur-sm border border-white relative p-8 rounded-3xl">
         <p className="text-2xl text-center pb-6">Weather in {data.name}</p>
         <div className="flex justify-between text-center">
           <div>
             <p className="font-bold text-2xl">
-              {data.main.feels_like.toFixed(0)}&#176;
+              {Math.ceil(((data.main.feels_like.toFixed(0) - 32) * 5) / 9)}
+              &#176;c
             </p>
             <p className="text-xl">Feels like</p>
           </div>
